@@ -1,0 +1,79 @@
+digraph architecture {
+  rankdir=TB;
+  node [shape=box, style=filled, fillcolor=lightblue, fontname="Arial"];
+  edge [fontname="Arial"];
+  
+  // Core components
+  subgraph cluster_core {
+    label="Core Components";
+    style=filled;
+    fillcolor=lightgrey;
+    
+    Core [label="Core Module\n(Central Controller)"];
+    ArbitrageService [label="Arbitrage Service"];
+    FlashLoanService [label="Flash Loan Service"];
+    MempoolService [label="Mempool Service"];
+    PortfolioService [label="Portfolio Service"];
+  }
+  
+  // External interfaces
+  subgraph cluster_external {
+    label="External Interfaces";
+    style=filled;
+    fillcolor=lightyellow;
+    
+    UI [label="User Interface\n(Next.js/React)"];
+    API [label="API Layer\n(Express)"];
+  }
+  
+  // External services
+  subgraph cluster_blockchain {
+    label="Blockchain";
+    style=filled;
+    fillcolor=lightgreen;
+    
+    DEXs [label="Decentralized Exchanges"];
+    FlashLoanProviders [label="Flash Loan Providers"];
+    Blockchain [label="Ethereum Blockchain"];
+  }
+  
+  // Databases
+  subgraph cluster_data {
+    label="Data Storage";
+    style=filled;
+    fillcolor=lightpink;
+    
+    MongoDB [label="MongoDB\n(Persistent Storage)"];
+    Redis [label="Redis\n(Cache & Real-time)"];
+  }
+  
+  // Connections
+  UI -> API [label="HTTP/WebSocket"];
+  API -> Core [label="Internal API"];
+  
+  Core -> ArbitrageService [label="Find Opportunities"];
+  Core -> FlashLoanService [label="Execute Loans"];
+  Core -> MempoolService [label="Monitor Transactions"];
+  Core -> PortfolioService [label="Manage Assets"];
+  
+  ArbitrageService -> DEXs [label="Price Data"];
+  FlashLoanService -> FlashLoanProviders [label="Loan Execution"];
+  MempoolService -> Blockchain [label="Transaction Monitoring"];
+  PortfolioService -> Blockchain [label="Wallet Interaction"];
+  
+  ArbitrageService -> MongoDB [label="Store Opportunities"];
+  PortfolioService -> MongoDB [label="Store Portfolio Data"];
+  
+  ArbitrageService -> Redis [label="Cache Prices"];
+  MempoolService -> Redis [label="Real-time Updates"];
+  
+  // Legend
+  subgraph cluster_legend {
+    label="Legend";
+    node [shape=box, style=filled];
+    legend_core [label="Core Component", fillcolor=lightblue];
+    legend_external [label="External Interface", fillcolor=lightyellow];
+    legend_blockchain [label="Blockchain Component", fillcolor=lightgreen];
+    legend_data [label="Data Storage", fillcolor=lightpink];
+  }
+}

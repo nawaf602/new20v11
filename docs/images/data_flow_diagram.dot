@@ -1,0 +1,87 @@
+digraph data_flow {
+  rankdir=TB;
+  node [shape=box, style=filled, fillcolor=lightblue, fontname="Arial"];
+  edge [fontname="Arial"];
+  
+  // Data sources
+  subgraph cluster_sources {
+    label="Data Sources";
+    style=filled;
+    fillcolor=lightgreen;
+    
+    DEXs [label="DEX Price Data"];
+    Mempool [label="Mempool Transactions"];
+    Blockchain [label="Blockchain State"];
+    UserInput [label="User Configuration"];
+  }
+  
+  // Processing components
+  subgraph cluster_processing {
+    label="Data Processing";
+    style=filled;
+    fillcolor=lightyellow;
+    
+    PriceFetcher [label="Price Fetcher"];
+    OpportunityCalculator [label="Opportunity Calculator"];
+    MempoolAnalyzer [label="Mempool Analyzer"];
+    SimulationEngine [label="Simulation Engine"];
+    ExecutionEngine [label="Execution Engine"];
+    PortfolioTracker [label="Portfolio Tracker"];
+  }
+  
+  // Storage
+  subgraph cluster_storage {
+    label="Data Storage";
+    style=filled;
+    fillcolor=lightpink;
+    
+    PriceCache [label="Price Cache\n(Redis)"];
+    OpportunityStore [label="Opportunity Store\n(MongoDB)"];
+    TransactionHistory [label="Transaction History\n(MongoDB)"];
+    PortfolioData [label="Portfolio Data\n(MongoDB)"];
+  }
+  
+  // Output
+  subgraph cluster_output {
+    label="Output";
+    style=filled;
+    fillcolor=lightcyan;
+    
+    Dashboard [label="Dashboard UI"];
+    Notifications [label="Notifications"];
+    Reports [label="Reports & Analytics"];
+    Transactions [label="Blockchain Transactions"];
+  }
+  
+  // Data flow connections
+  DEXs -> PriceFetcher [label="Price Data"];
+  Mempool -> MempoolAnalyzer [label="Pending Txs"];
+  Blockchain -> PortfolioTracker [label="Wallet State"];
+  UserInput -> OpportunityCalculator [label="Parameters"];
+  UserInput -> ExecutionEngine [label="Execution Config"];
+  
+  PriceFetcher -> PriceCache [label="Store"];
+  PriceCache -> OpportunityCalculator [label="Retrieve"];
+  
+  OpportunityCalculator -> OpportunityStore [label="Store"];
+  OpportunityStore -> SimulationEngine [label="Retrieve"];
+  
+  MempoolAnalyzer -> OpportunityCalculator [label="Potential Opportunities"];
+  
+  SimulationEngine -> ExecutionEngine [label="Validated Opportunities"];
+  ExecutionEngine -> Transactions [label="Submit"];
+  ExecutionEngine -> TransactionHistory [label="Record"];
+  
+  Blockchain -> PortfolioTracker [label="Transaction Results"];
+  PortfolioTracker -> PortfolioData [label="Update"];
+  
+  OpportunityStore -> Dashboard [label="Display"];
+  TransactionHistory -> Dashboard [label="Display"];
+  PortfolioData -> Dashboard [label="Display"];
+  
+  OpportunityStore -> Notifications [label="Alert"];
+  TransactionHistory -> Notifications [label="Alert"];
+  
+  TransactionHistory -> Reports [label="Analyze"];
+  PortfolioData -> Reports [label="Analyze"];
+}

@@ -1,0 +1,79 @@
+digraph user_flow {
+  rankdir=LR;
+  node [shape=box, style=filled, fillcolor=lightblue, fontname="Arial"];
+  edge [fontname="Arial"];
+  
+  // User flow nodes
+  Start [label="Start", shape=oval, fillcolor=lightgreen];
+  Login [label="Login/Authentication"];
+  Dashboard [label="Dashboard\nOverview"];
+  
+  // Main actions
+  subgraph cluster_actions {
+    label="Main Actions";
+    style=filled;
+    fillcolor=lightyellow;
+    
+    ConfigureSettings [label="Configure Settings"];
+    MonitorOpportunities [label="Monitor Arbitrage\nOpportunities"];
+    ExecuteTrades [label="Execute Trades"];
+    ManagePortfolio [label="Manage Portfolio"];
+    ViewAnalytics [label="View Analytics"];
+  }
+  
+  // Settings subflow
+  subgraph cluster_settings {
+    label="Settings Configuration";
+    style=filled;
+    fillcolor=lightpink;
+    
+    GeneralSettings [label="General Settings"];
+    ArbitrageSettings [label="Arbitrage Settings"];
+    SecuritySettings [label="Security Settings"];
+    NetworkSettings [label="Network Settings"];
+  }
+  
+  // Execution subflow
+  subgraph cluster_execution {
+    label="Trade Execution";
+    style=filled;
+    fillcolor=lightcyan;
+    
+    ReviewOpportunity [label="Review Opportunity"];
+    SimulateTrade [label="Simulate Trade"];
+    ConfirmExecution [label="Confirm Execution"];
+    MonitorTransaction [label="Monitor Transaction"];
+    ViewResults [label="View Results"];
+  }
+  
+  // Flow connections
+  Start -> Login;
+  Login -> Dashboard;
+  
+  Dashboard -> ConfigureSettings;
+  Dashboard -> MonitorOpportunities;
+  Dashboard -> ManagePortfolio;
+  Dashboard -> ViewAnalytics;
+  
+  ConfigureSettings -> GeneralSettings;
+  ConfigureSettings -> ArbitrageSettings;
+  ConfigureSettings -> SecuritySettings;
+  ConfigureSettings -> NetworkSettings;
+  
+  MonitorOpportunities -> ExecuteTrades;
+  
+  ExecuteTrades -> ReviewOpportunity;
+  ReviewOpportunity -> SimulateTrade;
+  SimulateTrade -> ConfirmExecution;
+  ConfirmExecution -> MonitorTransaction;
+  MonitorTransaction -> ViewResults;
+  ViewResults -> Dashboard;
+  
+  // Return paths
+  GeneralSettings -> Dashboard;
+  ArbitrageSettings -> Dashboard;
+  SecuritySettings -> Dashboard;
+  NetworkSettings -> Dashboard;
+  ManagePortfolio -> Dashboard;
+  ViewAnalytics -> Dashboard;
+}
