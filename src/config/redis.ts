@@ -1,5 +1,5 @@
 import IORedis, { Redis } from "ioredis"; // Import both default and Redis type
-import { logger } from "@/utils/logger"; // Corrected path
+import { logger } from "../utils/logger"; // Corrected path
 
 // Redis client instance
 let redisClient: Redis;
